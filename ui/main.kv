@@ -1,0 +1,76 @@
+#:kivy 2.3.0
+
+<Screen>:
+    bg_color: 1,1,1,1
+    canvas.before:
+        Color:
+            rgba: self.bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<Label>:
+    halign:"left"
+    valign: "middle"
+
+<Button>:
+    background_color: 0,0,0,0
+    background_normal: ""
+    background_down: ""
+    halign: "center"
+    valign: "middle"
+    bold: True
+    padding: 16
+
+<RoundedHoverButton>:
+    radius: self.height/4
+    bg_active: app.button_active
+    bg_inactive: app.button_inactive
+    color: 1,1,1,1
+
+<RoundedToggleButton>:
+    bg_active: app.toggle_active
+    bg_inactive: 0,0,0,0#app.background_color
+    text_active: app.text_primary
+    text_inactive: app.text_secondary
+
+<Indicator>:
+    size_hint: None, None
+    size: 8,8
+    pos_hint: {"center_x":0.5, "center_y": 0.5}
+    canvas:
+        Color:
+            rgba: root.indicator_color
+        Ellipse:
+            pos: self.pos
+            size: self.size
+        BoxShadow:
+            pos: self.pos
+            size: self.size
+            blur_radius: 6
+
+RootLayout:
+    topbar: topbar
+    sm: sm
+
+    Topbar:
+        id: topbar
+    
+    ScreenManager:
+        id: sm
+        home: home
+        login: login
+
+        LoginScreen:
+            id: login
+            name: "login"
+
+        HomeScreen:
+            id: home
+            name: "home"
+
+        ProjectSelectScreen:
+            name: "project"
+
+        LogUploadScreen:
+            name: "log"

@@ -1,0 +1,6 @@
+__pycache__/
+.venv/
+API/
+
+assets/
+config.py

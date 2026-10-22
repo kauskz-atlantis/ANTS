@@ -1,0 +1,114 @@
+#:kivy 2.3.0
+
+<ProjectSelectScreen>:
+    dropdown_btn: project_dropdown_btn
+    input: project_input
+
+    Image:
+        source: "assets/images/footer-bg.png"
+        fit_mode: "cover"
+        size_hint: 1,None
+        pos_hint: {"center_x":0.5, "y":0}
+
+    Label:
+        size_hint_y: None
+        height: self.texture_size[1]
+        pos_hint: {"center_x":0.5, "top": 0.9}
+        text: "Select a project"
+        color: app.text_primary
+        font_size: 20
+        bold: True
+    
+    Button:
+        id: project_dropdown_btn
+        size_hint: 0.6, None
+        height: 48
+        pos_hint: {"center_x":0.5, "center_y": 0.8}
+        
+        IconTextInput:
+            id: project_input
+            icon_source: "assets/images/username_icon.png"
+            hint_text: "PROJECT NAME"
+            pos: self.parent.pos
+            size: self.parent.size
+    
+    Label:
+        pos_hint: {"center_x":0.5, "center_y":0.1}
+        size_hint_y: None
+        height: self.texture_size[1]
+        text: f"Device ID: {app.device_id}"
+        font_size: 18
+        color: app.text_primary
+
+<LogUploadScreen>:
+    container: container
+    site_details: site_details
+    lbl_status: lbl_status
+    loader: loader
+
+    Image:
+        source: "assets/images/footer-bg.png"
+        fit_mode: "cover"
+        size_hint: 1,None
+        pos_hint: {"center_x":0.5, "y":0}
+    
+    Label:
+        size_hint: 0.3, None
+        height: 32
+        pos_hint: {"center_x":0.5, "top": 0.95}
+        text: "Welcome to ANTS"
+        font_size: 26
+        color: 0,0,0,1
+    
+    RoundedBoxLayout:
+        orientation: "vertical"
+        size_hint: 0.45, None
+        height: self.minimum_height
+        pos_hint: {"center_x": 0.25, "center_y": 0.55}
+        padding: 20
+        spacing: 32
+
+        bg_color: app.background_color
+        radius: self.height/8
+
+        GridLayout:
+            id: site_details
+            size_hint_y: None
+            height: self.minimum_height
+            cols: 2
+            spacing: 20
+
+        BoxLayout:
+            id: container
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: 40
+
+        CircularLoader:
+            id: loader
+            radius: 12
+            color: app.light
+            size_hint: None, None
+            size: (self.radius*2 + 24, self.radius*2) if self.opacity == 1 else (0,0)
+            pos_hint: {"center_y": 0.5, "center_x": 0.5}
+            opacity: 0
+
+        Label:
+            id: lbl_status
+            text_size: self.width, None
+            halign: "center"
+            valign: "middle"
+            text: root.status
+            font_size: 18
+            color: app.text_primary
+            #bold: True
+
+    Label:
+        size_hint: 0.8, None
+        height: self.texture_size[1]
+        pos_hint: {"center_x":0.5, "center_y": 0.08}
+        text: f"Host Device Serial Number: {app.device_id}"
+        font_size: 20
+        bold: True
+        color: app.text_primary

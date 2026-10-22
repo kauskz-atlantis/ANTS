@@ -1,0 +1,362 @@
+#:kivy 2.3.0
+
+<StatusBox>:
+    orientation: "horizontal"
+    size_hint_y: None
+    height: 220
+    padding: 22, 16
+    spacing: 16
+
+    bg_color: app.background_color
+    radius: self.height/8
+
+    BoxLayout:
+        orientation: "vertical"
+        size_hint_y: None
+        height: self.minimum_height
+        pos_hint: {"top": 1}
+        spacing: 12
+
+        Image:
+            canvas.before:
+                Color:
+                    rgba: app.background_color2
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [self.height/4]
+
+            source: root.source
+            size_hint: None, None
+            size: 24,24
+            fit_mode: "contain"
+        
+        Label:
+            size_hint: None, None
+            size: self.texture_size
+            text: root.title
+            bold: True
+            color: app.text_primary
+            font_size: 18
+        
+        Label:
+            size_hint_y: None
+            height: self.texture_size[1]
+            text_size: self.width, None
+            text: root.body1
+            bold: True
+            color: app.text_primary
+            font_size: 15
+        
+        Label:
+            size_hint: None, None
+            size: self.texture_size
+            text: root.body2
+            bold: True
+            color: app.text_secondary
+            font_size: 14
+        Label:
+            size_hint: None, None
+            size: self.texture_size
+            text: root.body3
+            bold: True
+            color: app.text_secondary
+            font_size: 14
+    
+<StatusBoxCircle@CircularProgressBarBoxLayout>:
+    orientation: "vertical"
+    pos_hint: {"center_y": 0.5}
+    size_hint_y: 0.6
+
+    bg_color: 0.5,0.5,0.5,1
+    arc_color: app.arc_color
+    circle_width: 4
+
+    label_text: f"{root.value:0.0f}%"
+
+    Widget:
+    Label:
+        size_hint_y: None
+        height: self.texture_size[1]
+        text: root.label_text
+        color: app.text_primary
+        font_size: 15
+        bold: True
+        halign: "center"
+    Widget:
+
+<NodeList@BoxLayout>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: self.minimum_height
+    padding: 0, 16
+    spacing: 2
+
+    Label:
+        size_hint_y: None
+        height: self.texture_size[1]
+        text: "NODE LIST"
+        color: app.text_primary
+        font_size: 16
+        bold: True
+        padding: 8
+
+<NodeListButton>:
+    size_hint_y: None
+    height: self.texture_size[1]
+    text_size: self.width, None
+    font_size: 15
+    bold: True
+
+<DetailsWidget>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: self.minimum_height
+    pos_hint: {"top":1}
+    spacing: 4
+
+    Label:
+        size_hint: None, None
+        size: self.texture_size
+        text: root.title
+        color: app.text_secondary
+        font_size: "14sp"
+        padding: 0
+
+    Label:
+        size_hint_y: None
+        height: self.texture_size[1]
+        text_size: self.width, None
+        text: root.body
+        color: app.text_primary
+        font_size: "15sp"
+        bold: True
+        padding: 0
+
+<DetailsCard>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: self.minimum_height
+    spacing: 12
+    padding: 30
+
+    bg_color: app.background_color
+    radius: self.height/10
+
+    refresh: refresh
+    loader: loader
+
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint_y: None
+        height: self.minimum_height
+        
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            
+            Label:
+                size_hint: None, None
+                size: self.texture_size
+                text: root.status["device_name"]
+                color: app.text_primary
+                font_size: "16sp"
+                bold: True
+            
+            Label:
+                size_hint: None, None
+                size: self.texture_size
+                text: root.status["device_id"]
+                color: app.text_secondary
+                font_size: "14sp"
+        Widget:
+        CircularLoader:
+            id: loader
+            color: app.light
+            size_hint: None, None
+            size: self.radius*2 + 24, self.radius*2
+            pos_hint: {"center_y":0.5}
+            opacity: 0
+        
+        RoundedHoverButton:
+            id: refresh
+            text: "REFRESHING..." if self.disabled else "REFRESH" 
+            padding: 8
+            size_hint: None, None
+            size: 140, self.texture_size[1]
+            on_release: root.screen.refresh()
+    Widget:
+        pos_hint: {"center_x": 0.5}
+        size_hint_y: None
+        height: 1
+        canvas.before:
+            Color:
+                rgba: 0.4,0.4,0.4,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+    
+    Label:
+        canvas.before:
+            Color:
+                rgba: app.arc_color
+            RoundedRectangle:
+                pos: self.pos
+                size: 6, self.height
+                radius: [3]
+
+        size_hint: None, None
+        size: self.texture_size
+        text: "DEVICE SPECIFICATIONS"
+        color: app.text_primary
+        bold: True
+        font_size: "15sp"
+        padding: 16,8
+
+    GridLayout:
+        size_hint_y: None
+        height: self.minimum_height
+        cols: 2
+        padding: 8,0
+        spacing: 8,12
+        DetailsWidget:
+            title: "DEVICE NAME"
+            body: root.status["device_name"]
+        DetailsWidget:
+            title: "PROCESSOR"
+            body: root.status["processor"]
+        DetailsWidget:
+            title: "RAM"
+            body: f"{root.status['ram_total']} ({root.status['ram_usable']} usable)"
+        DetailsWidget:
+            title: "DEVICE UUID"
+            body: root.status["device_uuid"]
+        DetailsWidget:
+            title: "GRAPHICS CARD"
+            body: root.status["gpu"]
+        DetailsWidget:
+            title: "PRODUCT ID"
+            body: root.status["product_id"]
+        DetailsWidget:
+            title: "MANUFACTURER"
+            body: root.status["manufacturer"]
+        DetailsWidget:
+            title: "ARCHITECTURE"
+            body: root.status["architecture"]
+
+<HomeScreen>:
+    upper: upper
+    nodelist: nodelist
+    details: details
+    loader_host_info: loader_host_info
+    
+    Image:
+        source: "assets/images/footer-bg.png"
+        fit_mode: "cover"
+        size_hint: 1,None
+        pos_hint: {"center_x":0.5, "y":0}
+    
+    CircularLoader:
+        id: loader_host_info
+        color: app.light
+        size_hint: 0.5,0.5
+        pos_hint: {"center_y":0.5}
+        opacity: 0
+
+    ScrollView:
+        do_scroll_x: False
+        do_scroll_y: True
+        scroll_type: ['bars', 'content']
+        bar_color: app.scroll_bar
+        bar_inactive_color: app.scroll_bar_inactive
+        bar_width: 4
+        bar_margin: 2
+        always_overscroll: False
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            padding: 20
+            spacing: 20
+            
+            GridLayout:
+                id: upper
+                status1: status1
+                status2: status2
+                status3: status3
+                rows: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 16
+
+                StatusBox:
+                    id: status1
+                    source: "assets/images/hard-drive.png"
+                    title: "STORAGE"
+                    body1: f"TOTAL: {root.status['storage_total']}"
+                    body2: f"USED: {root.status['storage_used']}"
+                    body3: f"AVAILABLE: {root.status['storage_available']}"
+
+                    StatusBoxCircle:
+                        value: root.status["storage_available_percent"]
+                        label_text: f"{root.status['storage_available_percent']:0.0f}%\nAVAILABLE"
+                
+                StatusBox:
+                    id: status2
+                    source: "assets/images/battery-full.png"
+                    title: "BATTERY"
+                    body1: f"CHARGE: {root.status['battery']}%" if root.status["battery"]>0 else ""
+                    body2: f"CAPACITY: {root.status['battery_capacity']}"
+                    body3: f"HEALTH: {root.status['battery_health']:0.0f}%" if root.status["battery_health"] else ""
+                    
+                    StatusBoxCircle:
+                        value: root.status["battery"]
+                        label_text: f"{root.status['battery']}%\n{'CHARGING' if root.status['charging'] else 'NOT\nCHARGING'}"
+                
+                StatusBox:
+                    id: status3
+                    source: "assets/images/sliders-02.png"
+                    title: "RAM" if root.selected_device == "host" else "SIM Card"
+                    body1: f"TOTAL: {root.status['ram_total']}" if root.selected_device == "host" else f"SIM1: {root.status['sim1']}"
+                    body2: f"USED: {root.status['ram_used']}" if root.selected_device == "host" else f"SIM2: {root.status['sim2']}"
+                    body3: f"AVAILABLE: {root.status['ram_usable']}" if root.selected_device == "host" else ""
+
+            BoxLayout:
+                orientation:'horizontal'
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: "20dp"
+
+                ScrollView:
+                    size_hint: 0.32, 1
+                    height: 350
+                    pos_hint: {"top":1}
+                    padding: 0,40
+
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    scroll_type: ['bars', 'content']
+                    bar_color: app.scroll_bar
+                    bar_inactive_color: app.scroll_bar_inactive
+                    bar_width: 4
+                    bar_margin: 2
+                    always_overscroll: False
+
+                    canvas.before:
+                        Color:
+                            rgba: app.background_color
+                        RoundedRectangle:
+                            pos: self.pos
+                            size: self.size
+                            radius: [self.height/10]
+
+                    NodeList:
+                        id: nodelist
+
+                DetailsCard:
+                    id: details
+                    size_hint_x: 0.68
+                    status: root.status
+                    screen: root

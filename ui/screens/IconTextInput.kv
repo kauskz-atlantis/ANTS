@@ -1,0 +1,52 @@
+#:kivy 2.3.0
+<IconTextInput>:
+    orientation: "horizontal"
+    spacing: 8
+    padding: 12, 8
+    size_hint_y: None
+    height: "48dp"
+    input_widget: txt_input
+
+    canvas.before:
+        Color:
+            rgba: 0.9,0.9,0.9,1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [6]
+        Color:
+            rgba: (0.15,0.5,0.8,1) if (root.focused) else (0.65,0.65,0.65,1)
+        Line:
+            rounded_rectangle: (*self.pos, *self.size, 6)
+            width: 1.5
+    Image:
+        source: root.icon_source
+        size_hint_x: None
+        width: "24dp"
+    TextInput:
+        id: txt_input
+        text: root.text
+        hint_text: root.hint_text
+        hint_text_color: 0.3,0.3,0.3,1
+        password: root.password and not root.show_password
+        background_normal: ""
+        background_active: ""
+        background_color: 0,0,0,0
+        foreground_color: 0,0,0,1
+        cursor_color: 0,0,0,1
+        multiline: False
+        on_text: root.text = self.text
+        on_focus: root.focused = self.focus
+    Button:
+        size_hint_x: None
+        width: "24dp"
+        opacity: 1 if root.password else 0
+        disabled: not root.password
+        background_color: 0,0,0,0
+        on_release:
+            root.show_password = not root.show_password
+        Image:
+            center: self.parent.center
+            size: 16,16
+            size_hint: None, None
+            source: "assets/images/show.png" if root.show_password else "assets/images/hide.png"

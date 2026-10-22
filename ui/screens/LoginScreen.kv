@@ -1,0 +1,91 @@
+#:kivy 2.3.0
+
+<LoginScreen>:
+    canvas.before:
+        Color:
+            rgba: 1,1,1,1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        orientation: "horizontal"
+        BoxLayout:
+            size_hint_x: 0.45
+            orientation: "vertical"
+            FloatLayout:
+                canvas.before:
+                    Color:
+                        rgba: app.background_color
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                Image:
+                    source: "assets/images/logo.png"
+                    pos_hint: {"center_x":0.5, "center_y":0.78}
+                Image:
+                    source: "assets/images/footer-bg.png"
+                    fit_mode: "cover"
+                    size_hint: 1,None
+                    pos_hint: {"center_x":0.5, "y":0}
+                AnimatedText:
+                    full_text: "Welcome To ANTS.\nTrusted Partner\nfor Networks of the Future."
+                    font_size: "28sp"
+                    color: 0,0,0,1
+                    #outline_width: 2
+                    #outline_color: 0,0,0,1
+                    size_hint: 0.9, None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    halign: "center"
+                    pos_hint: {"center_x":0.5, "center_y":0.5}
+                Label:
+                    text: "OUR CLIENTS ARE OUR FIRST PRIORITY."
+                    font_size: "18sp"
+                    color: 0,0,0,1
+                    #outline_width: 2
+                    #outline_color: 0,0,0,1
+                    size_hint: 0.9, None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    halign: "center"
+                    pos_hint: {"center_x":0.5, "y":0.25}
+        Widget:
+            size_hint_x: None
+            width: 4
+            canvas:
+                Color:
+                    rgba: 0,0,0,1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: 0.55, None
+            height: self.minimum_height
+            pos_hint: {"center_y": 0.5}
+            padding: 20
+            spacing: 20
+            Image:
+                source: "assets/images/logo.png"
+                size_hint: None,None
+                size: self.texture_size
+                pos_hint: {"center_x":0.5}
+            IconTextInput:
+                id: username
+                icon_source: "assets/images/username_icon.png"
+                hint_text: "USERNAME"
+            IconTextInput:
+                id: password
+                icon_source: "assets/images/password_icon.png"
+                hint_text: "PASSWORD"
+                password: True
+            Widget:
+                size_hint_y: None
+                height: 8
+            RoundedHoverButton:
+                size_hint_y: None
+                height: self.texture_size[1] + 8
+                text: "LOGIN"
+                font_size: 18
+                bold: True
+                on_release: root.login()
